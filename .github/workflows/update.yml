@@ -1,4 +1,4 @@
-name: Update-NTOU-Calendar
+name: Update-PKGBUILDs
 
 on:
   create:
