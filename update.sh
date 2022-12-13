@@ -11,6 +11,7 @@ update_srcinfo() {
 export -f update_srcinfo
 export TMP
 
+git config --global --add safe.directory "$PKG_ROOT"
 mkdir -p "$TMP"
 
 # Runs all the scripts in the `updates` directory
