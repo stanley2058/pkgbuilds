@@ -17,5 +17,5 @@ jobs:
       - uses: actions/checkout@v2
       - run: ./dependencies.sh
       - run: ./builder.sh
-      - run: sudo -u bash ./update.sh
+      - run: sudo -u builder bash ./update.sh
       - uses: stefanzweifel/git-auto-commit-action@v4
