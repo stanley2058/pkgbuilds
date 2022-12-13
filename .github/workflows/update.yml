@@ -16,5 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: ./dependencies.sh
-      - run: ./update.sh
+      - run: ./builder.sh
+      - run: sudo -u bash ./update.sh
       - uses: stefanzweifel/git-auto-commit-action@v4
