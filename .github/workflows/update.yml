@@ -15,8 +15,7 @@ jobs:
 
     steps:
       - run: pacman -Sy --needed --noconfirm git sudo jq
-      - run: useradd builder && passwd -d builder && printf 'builder ALL=(ALL) ALL\n' | tee -a /etc/sudoers
-      - run: sudo -u builder git clone https://github.com/${{ github.repository }}
-      - run: sudo -u builder bash ./update.sh
-      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - uses: actions/checkout@v3
+      - run: ./builder.sh
+      - run: ./update.sh
       - uses: stefanzweifel/git-auto-commit-action@v4

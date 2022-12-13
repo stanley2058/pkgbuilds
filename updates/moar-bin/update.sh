@@ -10,5 +10,5 @@ sed -i "s/pkgver=.*/pkgver=$VERSION/" "$PKG_ROOT/PKGBUILD"
 sed -i "s/sha256sums=('[^']*')/sha256sums=('$SHA256SUM')/" "$PKG_ROOT/PKGBUILD"
 
 pushd "$PKG_ROOT" &>/dev/null || exit 1
-makepkg --printsrcinfo > .SRCINFO
+update_srcinfo
 popd &>/dev/null || exit 1
