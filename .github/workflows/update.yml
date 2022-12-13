@@ -14,7 +14,7 @@ jobs:
     name: update
 
     steps:
-      - run: ./dependencies.sh
+      - run: pacman -Sy --needed --noconfirm git jq
       - uses: actions/checkout@v3
       - run: ./builder.sh
       - run: sudo -u builder bash ./update.sh
