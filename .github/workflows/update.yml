@@ -10,11 +10,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: generate
+    container: archlinux:base-devel
+    name: update
 
     steps:
       - uses: actions/checkout@v2
-      - name: Install Archlinux
-        run: curl -L https://github.com/zaoqi/github-actions-archlinux/raw/master/install.sh | sh
+      - run: ./dependencies.sh
       - run: ./update.sh
       - uses: stefanzweifel/git-auto-commit-action@v4
