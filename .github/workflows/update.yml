@@ -14,8 +14,9 @@ jobs:
     name: update
 
     steps:
-      - run: pacman -Sy --needed --noconfirm git jq
-      - uses: actions/checkout@v3
-      - run: ./builder.sh
+      - run: pacman -Sy --needed --noconfirm git sudo jq
+      - run: useradd builder && passwd -d builder && printf 'builder ALL=(ALL) ALL\n' | tee -a /etc/sudoers
+      - run: sudo -u builder git clone ${{ github.repository }}
       - run: sudo -u builder bash ./update.sh
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - uses: stefanzweifel/git-auto-commit-action@v4
