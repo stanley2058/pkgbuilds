@@ -1,0 +1,24 @@
+# Maintainer: Stanley Wang <stanley@stw.tw>
+
+pkgname=plex-rich-presence
+pkgver=2.0.6
+pkgrel=1
+pkgdesc="A desktop app to enable discord rich presence for your Plex Media Server Activity"
+arch=(any)
+provides=(PlexRichPresence.UI.Avalonia)
+conflicts=()
+url='https://github.com/Ombrelin/plex-rich-presence'
+license=(MIT)
+makedepends=(tar xz)
+source=('https://github.com/Ombrelin/plex-rich-presence/releases/download/2.0.6/PlexRichPresence.UI.Avalonia.2.0.5.deb')
+sha256sums=('dfc9dd0849fbcedeee1096e0bb500cc6b17bd93b11506c8facad80b32e91ed50')
+
+build() {
+  cd "${srcdir}" || exit 1
+  ar xv ./*.deb
+  tar xf data.tar.xz 
+}
+
+package() {
+  cp -r usr "${pkgdir}/"
+}
