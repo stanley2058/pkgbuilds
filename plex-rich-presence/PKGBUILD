@@ -9,6 +9,7 @@ provides=(PlexRichPresence.UI.Avalonia)
 conflicts=()
 url='https://github.com/Ombrelin/plex-rich-presence'
 license=(MIT)
+depends=(dotnet-runtime-6.0)
 makedepends=(tar xz)
 source=('https://github.com/Ombrelin/plex-rich-presence/releases/download/2.0.6/PlexRichPresence.UI.Avalonia.2.0.5.deb')
 sha256sums=('dfc9dd0849fbcedeee1096e0bb500cc6b17bd93b11506c8facad80b32e91ed50')
