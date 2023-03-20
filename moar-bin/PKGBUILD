@@ -1,7 +1,7 @@
 # Maintainer: Stanley Wang <stanley@stw.tw>
 
 pkgname=moar
-pkgver=1.12.0
+pkgver=1.13.0
 pkgrel=1
 pkgdesc="A pager designed to just do the right thing without any configuration."
 arch=(any)
@@ -13,7 +13,7 @@ makedepends=(go gzip)
 optdepends=(highlight)
 checkdepends=(highlight)
 source=("https://github.com/walles/moar/archive/refs/tags/v${pkgver}.tar.gz")
-sha256sums=('9b5cb4abab746e51c632648b50634a6f4255b709938ca8be240bff49e73bdc0b')
+sha256sums=('65eac0d4f8a40f0198a93f0888a60a28e8466b2ee9d0437f143db5c25d5e9319')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
