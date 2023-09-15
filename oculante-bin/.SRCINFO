@@ -6,6 +6,7 @@ pkgbase = oculante-bin
 	arch = any
 	license = MIT
 	checkdepends = nasm
+	makedepends = curl
 	provides = oculante
 	conflicts = oculante
 	source = https://github.com/woelper/oculante/releases/download/0.7.5/oculante_linux
