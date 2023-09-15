@@ -23,7 +23,7 @@ build() {
 package() {
     install -m755 oculante_linux "${pkgdir}/usr/bin/oculante"
 
-    cd "$srcdir" || exit 1
+    cd "$srcdir/oculante-${pkgver}" || exit 1
     install -Dm644 res/oculante.png "${pkgdir}/usr/share/icons/hicolor/128x128/apps/oculante.png"
     install -Dm644 res/oculante.desktop "${pkgdir}/usr/share/applications/oculante.desktop"
     install -Dm644 LICENSE -t "${pkgdir}/usr/share/licenses/oculante"
