@@ -16,21 +16,21 @@ source=("https://github.com/walles/moar/archive/refs/tags/v${pkgver}.tar.gz")
 sha256sums=('f10f6e7793f869574b22d0819cb84ad6e7a839513ff0efc0861b4cb3c5a18080')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-	go build -ldflags="-X main.versionString=${pkgver}" -o "${pkgname}"
-  gzip "moar.1"
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    go build -ldflags="-X main.versionString=${pkgver}" -o "${pkgname}"
+    gzip "moar.1"
 }
 
 check() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-	go test github.com/walles/moar/m
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    go test github.com/walles/moar/m
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-	
-	install -dm755 "${pkgdir}/usr/bin"
-	install -m755 "moar" "${pkgdir}/usr/bin/moar"
-  install -dm755 "${pkgdir}/usr/share/man/man1"
-  install -m0644 "moar.1.gz" "${pkgdir}/usr/share/man/man1/moar.1.gz"
+    cd "${srcdir}/${pkgname}-${pkgver}"
+
+    install -dm755 "${pkgdir}/usr/bin"
+    install -m755 "moar" "${pkgdir}/usr/bin/moar"
+    install -dm755 "${pkgdir}/usr/share/man/man1"
+    install -m0644 "moar.1.gz" "${pkgdir}/usr/share/man/man1/moar.1.gz"
 }
