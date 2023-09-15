@@ -10,10 +10,22 @@ conflicts=(oculante)
 url='https://github.com/woelper/oculante'
 license=(MIT)
 checkdepends=(nasm)
+makedepends=(curl)
 source=("https://github.com/woelper/oculante/releases/download/${pkgver}/oculante_linux")
 sha256sums=('7d37e47d04494bab803536eef876812da818acf086249bd81eb8b68d63c49b2b')
 
+build() {
+    cd "$srcdir/$pkgname-$pkgver" || exit 1
+    curl -L "https://github.com/woelper/oculante/archive/refs/tags/${pkgver}.tar.gz" >source.tar.gz
+    tar -xzf source.tar.gz
+}
+
 package() {
-    install -dm755 "${pkgdir}/usr/bin"
     install -m755 oculante_linux "${pkgdir}/usr/bin/oculante"
+
+    cd "$srcdir/$pkgname-$pkgver" || exit 1
+    install -Dm644 res/oculante.png "${pkgdir}/usr/share/icons/hicolor/128x128/apps/oculante.png"
+    install -Dm644 res/oculante.desktop "${pkgdir}/usr/share/applications/oculante.desktop"
+    install -Dm644 LICENSE -t "${pkgdir}/usr/share/licenses/oculante"
+    install -Dm644 README.md -t "${pkgdir}/usr/share/doc/oculante"
 }
