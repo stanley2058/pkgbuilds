@@ -19,10 +19,11 @@ build() {
     root="https://raw.githubusercontent.com/woelper/oculante/${pkgver}"
     curl -OL "${root}/res/oculante.desktop"
     curl -OL "${root}/res/oculante.png"
+    mv oculante_linux oculante
 }
 
 package() {
-    install -Dm755 oculante_linux "${pkgdir}/usr/bin/oculante"
+    install -Dm755 oculante "${pkgdir}/usr/bin/oculante"
     cd "$srcdir" || exit 1
     install -Dm644 oculante.png "${pkgdir}/usr/share/icons/hicolor/128x128/apps/oculante.png"
     install -Dm644 oculante.desktop "${pkgdir}/usr/share/applications/oculante.desktop"
