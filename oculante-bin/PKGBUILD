@@ -11,7 +11,7 @@ url='https://github.com/woelper/oculante'
 license=(MIT)
 checkdepends=(nasm)
 makedepends=(curl)
-source=("https://github.com/woelper/oculante/releases/download/${pkgver}/oculante_linux")
+source=("oculante_linux-$pkgname-$pkgver::https://github.com/woelper/oculante/releases/download/${pkgver}/oculante_linux")
 sha256sums=('dcd178a782970deb41fc6509fee6737664e15f8360d3e4097bb8292d81278b4f')
 
 build() {
@@ -19,7 +19,7 @@ build() {
     root="https://raw.githubusercontent.com/woelper/oculante/${pkgver}"
     curl -OL "${root}/res/oculante.desktop"
     curl -OL "${root}/res/oculante.png"
-    mv oculante_linux oculante
+    mv "oculante_linux-$pkgname-$pkgver" oculante
 }
 
 package() {
