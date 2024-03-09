@@ -1,7 +1,7 @@
 # Maintainer: Stanley Wang <stanley@stw.tw>
 
 pkgname=oculante-bin
-pkgver=0.8.13
+pkgver=0.8.14
 pkgrel=1
 pkgdesc="A minimalistic crossplatform image viewer written in rust"
 arch=(any)
@@ -12,7 +12,7 @@ license=(MIT)
 checkdepends=(nasm)
 makedepends=(curl)
 source=("oculante_linux-$pkgname-$pkgver::https://github.com/woelper/oculante/releases/download/${pkgver}/oculante_linux")
-sha256sums=('13a972feaf0943cccd96eef9d2bf29be388755e4b31087130904b32e53d624c6')
+sha256sums=('7ee96c738cd22d6ddd5aa24d47f8d5f7d3d61c5b79664d43b9be31a5853e9a1b')
 
 build() {
     cd "$srcdir" || exit 1
