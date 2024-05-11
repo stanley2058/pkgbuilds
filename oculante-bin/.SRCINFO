@@ -1,6 +1,6 @@
 pkgbase = oculante-bin
 	pkgdesc = A minimalistic crossplatform image viewer written in rust
-	pkgver = 0.8.19
+	pkgver = 0.8.21
 	pkgrel = 1
 	url = https://github.com/woelper/oculante
 	arch = any
@@ -9,7 +9,7 @@ pkgbase = oculante-bin
 	makedepends = curl
 	provides = oculante
 	conflicts = oculante
-	source = oculante_linux-oculante-bin-0.8.19::https://github.com/woelper/oculante/releases/download/0.8.19/oculante_linux
-	sha256sums = 55d04bc111652852b3dbf902bc3a258cde79ff103aa578dcbc5372dd459f6d33
+	source = oculante_linux-oculante-bin-0.8.21::https://github.com/woelper/oculante/releases/download/0.8.21/oculante_linux
+	sha256sums = 665d6b51094f1fce2f211f1fbeb05fd6d4d531cac972eafb0394cc2adf29b6e3
 
 pkgname = oculante-bin
