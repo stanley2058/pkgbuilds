@@ -1,7 +1,7 @@
 # Maintainer: Stanley Wang <stanley@stw.tw>
 
 pkgname=zh-fonts
-pkgver=1.0.1
+pkgver=1.0.2
 pkgrel=1
 pkgdesc='A collection of Chinese (traditional) fonts'
 arch=(any)
@@ -12,7 +12,7 @@ source=(
     "genwan-1.0.1.zip::https://github.com/ButTaiwan/genwan-font/releases/download/v2.000/GenWanMin2-ttc.zip"
     "genseki-1.0.1.zip::https://github.com/ButTaiwan/genseki-font/releases/download/v2.000/GenSekiGothic2-ttc.zip"
     "gensen-1.0.1.zip::https://github.com/ButTaiwan/gensen-font/releases/download/v2.000/GenSenRounded2-ttc.zip"
-    "genyog-1.0.1.zip::https://github.com/ButTaiwan/genyog-font/releases/download/v1.0/GenKiGothic2-ttc.zip"
+    "genyog-1.0.2.zip::https://github.com/ButTaiwan/genyog-font/releases/download/v2.000/GenKiGothic2-ttc.zip"
 )
 noextract=("${source[@]%%::*}")
 sha256sums=(
@@ -20,7 +20,7 @@ sha256sums=(
     "15ef26d0184849a450afba405704c09a60591ddbdebee2fa8e2496a96fc351f7"
     "08b6ef44aac95cae3e58c780c1d75800640eb1e481982c221fa1bf2ec885cb25"
     "82c439a688a7083c641164e09515c11dbe3ca23f8d9d4a8874f6bb06a8d028c0"
-    "4c9c31a36b493c8481f2a035d6cdadf7289863e9ab2148ace1249f66df6d4f55"
+    "e2aab3e38f6a5e0b6b40f0d8fff93c1f48a250f51e913f738d1247edda96974b"
 )
 
 _fonts=('genyo' 'genwan' 'genseki' 'gensen' 'genyog')
