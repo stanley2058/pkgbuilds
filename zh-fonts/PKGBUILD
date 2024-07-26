@@ -26,15 +26,19 @@ sha256sums=(
 _fonts=('genyo' 'genwan' 'genseki' 'gensen' 'genyog')
 
 prepare() {
-    for id in "${_fonts[@]}"; do
-        mkdir -p "$srcdir/$id-$pkgver"
-        bsdtar -xf "$id-$pkgver.zip" -C "$srcdir/$id-$pkgver"
+    for ((i = 0; i < ${#_fonts[@]}; i++)); do
+        id=${_fonts[$i]}
+        dir_name=$(echo "${source[$i]}" | sed -r 's/\.zip::.*//')
+        mkdir -p "$srcdir/$dir_name"
+        bsdtar -xf "$dir_name.zip" -C "$srcdir/$dir_name"
     done
 }
 
 package() {
-    for id in "${_fonts[@]}"; do
-        cd "$srcdir/$id-$pkgver"
+    for ((i = 0; i < ${#_fonts[@]}; i++)); do
+        id=${_fonts[$i]}
+        dir_name=$(echo "${source[$i]}" | sed -r 's/\.zip::.*//')
+        cd "$srcdir/$dir_name"
         install -Dm644 -t "$pkgdir/usr/share/fonts/TTF/$id-ttf/" ./*.ttc
         install -Dm644 SIL_Open_Font_License_1.1.txt "$pkgdir/usr/share/licenses/$id-ttf/LICENSE"
     done
