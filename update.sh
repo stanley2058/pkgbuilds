@@ -7,10 +7,10 @@ update_srcinfo() {
     ID=$(id -u)
     if [ "$ID" == "0" ]; then
         chown -R builder: .
-        sudo -u builder makepkg --printsrcinfo | tee .SRCINFO &> /dev/null
+        sudo -u builder makepkg --printsrcinfo | tee .SRCINFO &>/dev/null
         chown -R root:root .
-    else 
-        makepkg --printsrcinfo | tee .SRCINFO &> /dev/null
+    else
+        makepkg --printsrcinfo | tee .SRCINFO &>/dev/null
     fi
 }
 
@@ -40,8 +40,11 @@ for d in *; do
     echo Updating: "$d"
 
     pushd "$d" &>/dev/null || exit
-    PKG_ROOT="$PKG_ROOT/$d" bash "update.sh"
-    popd &>/dev/null || exit  
+    [ -e "update.sh" ] && PKG_ROOT="$PKG_ROOT/$d" bash "update.sh"
+    [ -e "update.js" ] && PKG_ROOT="$PKG_ROOT/$d" node "update.js"
+    [ -e "update.mjs" ] && PKG_ROOT="$PKG_ROOT/$d" node "update.mjs"
+    [ -e "update.cjs" ] && PKG_ROOT="$PKG_ROOT/$d" node "update.cjs"
+    popd &>/dev/null || exit
 done
 popd &>/dev/null || exit
 
