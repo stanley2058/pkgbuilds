@@ -7,14 +7,15 @@ GITHUB_REPO=(
     "ButTaiwan/genwan-font"
     "ButTaiwan/genseki-font"
     "ButTaiwan/gensen-font"
+    "ButTaiwan/genyog-font"
 )
 
 declare -A GITHUB_REPO_SOURCE_MAPPING
-GITHUB_REPO_SOURCE_MAPPING['genki']="https://github.com/ButTaiwan/genyo-font/releases/download/#VERSION/GenKiMin2-ttc.zip"
-GITHUB_REPO_SOURCE_MAPPING['genyo']="https://github.com/ButTaiwan/genyo-font/releases/download/#VERSION/GenYoMin2-ttc.zip"
+GITHUB_REPO_SOURCE_MAPPING['genyo']="https://github.com/ButTaiwan/genyo-font/releases/download/#VERSION/GenKiMin2-ttc.zip"
 GITHUB_REPO_SOURCE_MAPPING['genwan']="https://github.com/ButTaiwan/genwan-font/releases/download/#VERSION/GenWanMin2-ttc.zip"
 GITHUB_REPO_SOURCE_MAPPING['genseki']="https://github.com/ButTaiwan/genseki-font/releases/download/#VERSION/GenSekiGothic2-ttc.zip"
 GITHUB_REPO_SOURCE_MAPPING['gensen']="https://github.com/ButTaiwan/gensen-font/releases/download/#VERSION/GenSenRounded2-ttc.zip"
+GITHUB_REPO_SOURCE_MAPPING['genyog']="https://github.com/ButTaiwan/genyog-font/releases/download/#VERSION/GenKiGothic2-ttc.zip"
 
 GITHUB_APIS=()
 for repo in "${GITHUB_REPO[@]}"; do
@@ -28,12 +29,8 @@ for ((i = 0; i < ${#GITHUB_APIS[@]}; i++)); do
     CURVER=$(echo "${source[$i]}" | sed -r 's/.*download\/v([0-9.]*).*/\1/')
     VER=$(curl -sH "Accept: application/vnd.github+json" "$URL" | jq -r ".tag_name" | sed -e 's/v//')
     if [ "$CURVER" != "$VER" ]; then
-        if [ $i == 0 ]; then
-            MISMATCHED+=("${_fonts[$i]}")
-            NEW_VERSIONS["${_fonts[$i]}"]="$VER"
-        fi
-        MISMATCHED+=("${_fonts[$i + 1]}")
-        NEW_VERSIONS["${_fonts[$i + 1]}"]="$VER"
+        MISMATCHED+=("${_fonts[$i]}")
+        NEW_VERSIONS["${_fonts[$i]}"]="$VER"
     fi
 done
 
