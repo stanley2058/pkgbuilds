@@ -1,14 +1,14 @@
 # Maintainer: Stanley Wang <stanley@stw.tw>
 
 pkgname=zh-fonts
-pkgver=1.0.2
+pkgver=1.0.1
 pkgrel=1
 pkgdesc='A collection of Chinese (traditional) fonts'
 arch=(any)
 url='https://github.com/ButTaiwan'
 license=(OFL)
 source=(
-    "genyo-1.0.1.zip::https://github.com/ButTaiwan/genyo-font/releases/download/v2.000/GenKiMin2-ttc.zip"
+    "genyo-1.0.1.zip::https://github.com/ButTaiwan/genyo-font/releases/download/v1.000/GenKiMin2-ttc.zip"
     "genwan-1.0.1.zip::https://github.com/ButTaiwan/genwan-font/releases/download/v2.000/GenWanMin2-ttc.zip"
     "genseki-1.0.1.zip::https://github.com/ButTaiwan/genseki-font/releases/download/v2.000/GenSekiGothic2-ttc.zip"
     "gensen-1.0.1.zip::https://github.com/ButTaiwan/gensen-font/releases/download/v2.000/GenSenRounded2-ttc.zip"
