@@ -1,0 +1,41 @@
+# Maintainer: Stanley Wang <stanley@stw.tw>
+
+pkgname=zh-fonts
+pkgver=1.0.1
+pkgrel=1
+pkgdesc='A collection of Chinese (traditional) fonts'
+arch=(any)
+url='https://github.com/ButTaiwan'
+license=(OFL)
+source=(
+    "genki-1.0.1.zip::https://github.com/ButTaiwan/genyo-font/releases/download/v2.000/GenKiMin2-ttc.zip"
+    "genyo-1.0.1.zip::https://github.com/ButTaiwan/genyo-font/releases/download/v2.000/GenYoMin2-ttc.zip"
+    "genwan-1.0.1.zip::https://github.com/ButTaiwan/genwan-font/releases/download/v2.000/GenWanMin2-ttc.zip"
+    "genseki-1.0.1.zip::https://github.com/ButTaiwan/genseki-font/releases/download/v2.000/GenSekiGothic2-ttc.zip"
+    "gensen-1.0.1.zip::https://github.com/ButTaiwan/gensen-font/releases/download/v2.000/GenSenRounded2-ttc.zip"
+)
+noextract=("${source[@]%%::*}")
+sha256sums=(
+    "4c9c31a36b493c8481f2a035d6cdadf7289863e9ab2148ace1249f66df6d4f55"
+    "555d78284473dc73e22e45f9f727ef8cd794b096b41eada80afd508f5d406bfb"
+    "15ef26d0184849a450afba405704c09a60591ddbdebee2fa8e2496a96fc351f7"
+    "08b6ef44aac95cae3e58c780c1d75800640eb1e481982c221fa1bf2ec885cb25"
+    "82c439a688a7083c641164e09515c11dbe3ca23f8d9d4a8874f6bb06a8d028c0"
+)
+
+_fonts=('genki' 'genyo' 'genwan' 'genseki' 'gensen')
+
+prepare() {
+    for id in "${_fonts[@]}"; do
+        mkdir -p "$srcdir/$id-$pkgver"
+        bsdtar -xf "$id-$pkgver.zip" -C "$srcdir/$id-$pkgver"
+    done
+}
+
+package() {
+    for id in "${_fonts[@]}"; do
+        cd "$srcdir/$id-$pkgver"
+        install -Dm644 -t "$pkgdir/usr/share/fonts/TTF/$id-ttf/" ./*.ttc
+        install -Dm644 SIL_Open_Font_License_1.1.txt "$pkgdir/usr/share/licenses/$id-ttf/LICENSE"
+    done
+}
