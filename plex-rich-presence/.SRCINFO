@@ -1,6 +1,6 @@
 pkgbase = plex-rich-presence
 	pkgdesc = A desktop app to enable discord rich presence for your Plex Media Server Activity
-	pkgver = 2.1.0
+	pkgver = 2.2.0
 	pkgrel = 1
 	url = https://github.com/Ombrelin/plex-rich-presence
 	arch = any
@@ -9,7 +9,7 @@ pkgbase = plex-rich-presence
 	makedepends = xz
 	depends = dotnet-runtime-6.0
 	provides = PlexRichPresence.UI.Avalonia
-	source = https://github.com/Ombrelin/plex-rich-presence/releases/download/2.1.0/PlexRichPresence.UI.Avalonia.2.0.10.deb
-	sha256sums = 236aa9886224f9777fd20f4a75f98346a1cfa8d1130e54ec29a99d972cf7b9c1
+	source = https://github.com/Ombrelin/plex-rich-presence/releases/download/2.2.0/plex-rich-presence-deb
+	sha256sums = 0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5
 
 pkgname = plex-rich-presence
