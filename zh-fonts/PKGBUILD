@@ -1,18 +1,19 @@
 # Maintainer: Stanley Wang <stanley@stw.tw>
 
 pkgname=zh-fonts
-pkgver=1.0.13
+pkgver=2.100
 pkgrel=1
 pkgdesc='A collection of Chinese (traditional) fonts'
 arch=(any)
 url='https://github.com/ButTaiwan'
 license=(OFL)
+makedepends=(python-fonttools)
 source=(
-    "genyo-1.0.13.zip::https://github.com/ButTaiwan/genyo-font/releases/download/v2.100/GenKiMin2-ttc.zip"
-    "genwan-1.0.13.zip::https://github.com/ButTaiwan/genwan-font/releases/download/v2.100/GenWanMin2-ttc.zip"
-    "genseki-1.0.13.zip::https://github.com/ButTaiwan/genseki-font/releases/download/v2.100/GenSekiGothic2-ttc.zip"
-    "gensen-1.0.13.zip::https://github.com/ButTaiwan/gensen-font/releases/download/v2.100/GenSenRounded2-ttc.zip"
-    "genyog-1.0.13.zip::https://github.com/ButTaiwan/genyog-font/releases/download/v2.100/GenKiGothic2-ttc.zip"
+    "genyo-2.100.zip::https://github.com/ButTaiwan/genyo-font/releases/download/v2.100/GenKiMin2-ttc.zip"
+    "genwan-2.100.zip::https://github.com/ButTaiwan/genwan-font/releases/download/v2.100/GenWanMin2-ttc.zip"
+    "genseki-2.100.zip::https://github.com/ButTaiwan/genseki-font/releases/download/v2.100/GenSekiGothic2-ttc.zip"
+    "gensen-2.100.zip::https://github.com/ButTaiwan/gensen-font/releases/download/v2.100/GenSenRounded2-ttc.zip"
+    "genyog-2.100.zip::https://github.com/ButTaiwan/genyog-font/releases/download/v2.100/GenKiGothic2-ttc.zip"
 )
 noextract=("${source[@]%%::*}")
 sha256sums=(
@@ -25,12 +26,71 @@ sha256sums=(
 
 _fonts=('genyo' 'genwan' 'genseki' 'gensen' 'genyog')
 
+_patch_ttc_cmap() {
+    local ttc_path=$1
+
+    python - "$ttc_path" <<'PY'
+from pathlib import Path
+import sys
+
+from fontTools.ttLib import TTCollection
+from fontTools.ttLib.tables._c_m_a_p import CmapSubtable
+
+path = Path(sys.argv[1])
+ttc = TTCollection(str(path))
+changed = False
+
+for font in ttc.fonts:
+    format12_tables = [
+        table for table in font["cmap"].tables if table.isUnicode() and table.format == 12 and table.cmap
+    ]
+    if not format12_tables:
+        continue
+
+    bmp_map = {
+        cp: glyph
+        for cp, glyph in max(format12_tables, key=lambda table: len(table.cmap)).cmap.items()
+        if cp <= 0xFFFF
+    }
+    if not bmp_map:
+        continue
+
+    cmap_table = font["cmap"]
+    for platform_id, enc_id in ((0, 3), (3, 1)):
+        target = next(
+            (
+                table
+                for table in cmap_table.tables
+                if table.platformID == platform_id and table.platEncID == enc_id and table.format == 4
+            ),
+            None,
+        )
+
+        if target is None:
+            target = CmapSubtable.newSubtable(4)
+            target.platformID = platform_id
+            target.platEncID = enc_id
+            target.language = 0
+            cmap_table.tables.append(target)
+
+        if len(getattr(target, "cmap", {})) != len(bmp_map):
+            target.cmap = dict(bmp_map)
+            changed = True
+
+if changed:
+    ttc.save(str(path))
+PY
+}
+
 prepare() {
     for ((i = 0; i < ${#_fonts[@]}; i++)); do
         id=${_fonts[$i]}
         dir_name=$(echo "${source[$i]}" | sed -r 's/\.zip::.*//')
         mkdir -p "$srcdir/$dir_name"
         bsdtar -xf "$dir_name.zip" -C "$srcdir/$dir_name"
+        for ttc in "$srcdir/$dir_name"/*.ttc; do
+            _patch_ttc_cmap "$ttc"
+        done
     done
 }
 

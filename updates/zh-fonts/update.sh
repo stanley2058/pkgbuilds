@@ -17,21 +17,33 @@ GITHUB_REPO_SOURCE_MAPPING['genseki']="https://github.com/ButTaiwan/genseki-font
 GITHUB_REPO_SOURCE_MAPPING['gensen']="https://github.com/ButTaiwan/gensen-font/releases/download/#VERSION/GenSenRounded2-ttc.zip"
 GITHUB_REPO_SOURCE_MAPPING['genyog']="https://github.com/ButTaiwan/genyog-font/releases/download/#VERSION/GenKiGothic2-ttc.zip"
 
-GITHUB_APIS=()
-for repo in "${GITHUB_REPO[@]}"; do
-    GITHUB_APIS+=("https://api.github.com/repos/$repo/releases/latest")
-done
+current_pkgver=$pkgver
+target_version=
 
 declare -A NEW_VERSIONS
 MISMATCHED=()
-for ((i = 0; i < ${#GITHUB_APIS[@]}; i++)); do
-    URL="${GITHUB_APIS[$i]}"
-    CURVER=$(echo "${source[$i]}" | sed -r 's/.*download\/v([0-9.]*).*/\1/')
-    VER=$(curl -sH "Accept: application/vnd.github+json" "$URL" | jq -r ".tag_name" | sed -e 's/v//')
-    if [ "$CURVER" != "$VER" ]; then
-        MISMATCHED+=("${_fonts[$i]}")
-        NEW_VERSIONS["${_fonts[$i]}"]="$VER"
+for ((i = 0; i < ${#GITHUB_REPO[@]}; i++)); do
+    url="https://api.github.com/repos/${GITHUB_REPO[$i]}/releases/latest"
+    current_source_ver=$(echo "${source[$i]}" | sed -r 's/.*download\/v([0-9.]*).*/\1/')
+    ver=$(curl -fsSL -H "Accept: application/vnd.github+json" "$url" | jq -r '.tag_name | ltrimstr("v")')
+
+    if [[ -z "$ver" || "$ver" == "null" ]]; then
+        echo "Failed to fetch release version from $url" >&2
+        exit 1
     fi
+
+    if [[ -z "$target_version" ]]; then
+        target_version=$ver
+    elif [[ "$target_version" != "$ver" ]]; then
+        echo "Mismatched upstream versions: expected $target_version but got $ver from ${GITHUB_REPO[$i]}" >&2
+        exit 1
+    fi
+
+    if [[ "$current_source_ver" != "$ver" ]]; then
+        MISMATCHED+=("${_fonts[$i]}")
+    fi
+
+    NEW_VERSIONS["${_fonts[$i]}"]=$ver
 done
 
 declare -A updated_shasum
@@ -42,20 +54,20 @@ for ((i = 0; i < ${#_fonts[@]}; i++)); do
     updated_src[$id]=${source[$i]}
 done
 
+echo "Current package version: $current_pkgver"
+echo "Upstream version: $target_version"
 echo "Mismatched:" "${MISMATCHED[@]}"
 echo "New versions:" "${NEW_VERSIONS[@]}"
 
-if [ "${#MISMATCHED[@]}" -gt 0 ]; then
-    IFS='.' read -r major minor patch <<<"$pkgver"
-    patch=$((patch + 1))
-    new_version="$major.$minor.$patch"
+if [[ "$current_pkgver" != "$target_version" || "${#MISMATCHED[@]}" -gt 0 ]]; then
+    new_version=$target_version
 
-    for id in "${MISMATCHED[@]}"; do
+    for id in "${_fonts[@]}"; do
         ver="${NEW_VERSIONS[$id]}"
         src_url=${GITHUB_REPO_SOURCE_MAPPING[$id]}
         fname="$(echo "$src_url" | sed -r "s/.*#VERSION\/(.*)/\1/")"
         src=$(echo "$src_url" | sed -r "s/#VERSION/v$ver/")
-        curl -sL "$src" >"$TMP/$fname"
+        curl -fsSL "$src" >"$TMP/$fname"
         updated_shasum[$id]=$(sha256sum "$TMP/$fname" | awk '{ print $1 }')
         updated_src[$id]="${id}-${new_version}.zip::$src"
     done
@@ -71,6 +83,7 @@ if [ "${#MISMATCHED[@]}" -gt 0 ]; then
 
     # update version
     sed -i "s/pkgver=.*/pkgver=$new_version/" "$PKG_ROOT/PKGBUILD"
+    sed -i 's/pkgrel=.*/pkgrel=1/' "$PKG_ROOT/PKGBUILD"
 
     # update src & sum
     sed -zr "s|source=\([^)]*\)|$src|g" -i "$PKG_ROOT/PKGBUILD"
